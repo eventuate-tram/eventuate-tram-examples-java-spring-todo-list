@@ -1,0 +1,7 @@
+dependencies {
+    compile project (":command")
+    compile project (":view")
+
+    testCompile "junit:junit:4.12"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+}
