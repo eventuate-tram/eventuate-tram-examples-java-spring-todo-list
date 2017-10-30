@@ -1,0 +1,56 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+    eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
+    maven {
+        url "https://dl.bintray.com/eventuateio-oss/eventuate-maven-release"
+    }
+}
+
+dependencies {
+
+    compile "io.eventuate.tram.core:eventuate-tram-jdbc-kafka:$eventuateTramVersion"
+    compile "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
+
+    compile "org.elasticsearch.client:transport:5.6.3"
+
+    compile "org.apache.logging.log4j:log4j-api:2.6.2"
+    compile "org.apache.logging.log4j:log4j-to-slf4j:2.6.2"
+
+    compile 'javax.el:javax.el-api:2.2.5'
+
+    compile 'mysql:mysql-connector-java:5.1.36'
+
+    compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    compile "org.springframework.hateoas:spring-hateoas:$springHateoasVersion"
+
+    compile "io.reactivex:rxjava:1.1.5"
+    compile "org.apache.httpcomponents:httpclient:4.5"
+
+    compile "io.springfox:springfox-swagger2:2.2.2"
+    compile 'io.springfox:springfox-swagger-ui:2.2.2'
+
+    testCompile "junit:junit:4.12"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+}
