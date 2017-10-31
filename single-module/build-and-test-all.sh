@@ -3,11 +3,11 @@
 
 . ./set-env.sh
 
-docker-compose down
+docker-compose -f docker-compose-infrastructure.yml down
 
 ./start-infrastructure.sh
 
 ./gradlew clean
 ./gradlew build
 
-docker-compose down
+docker-compose -f docker-compose-infrastructure.yml down
