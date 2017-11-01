@@ -35,7 +35,7 @@ public class TodoViewConfiguration {
   }
 
   @Bean
-  public TransportClient client() throws Exception {
+  public TransportClient elasticSearchClient() throws Exception {
     return new PreBuiltTransportClient(Settings.builder().put("client.transport.ignore_cluster_name", true).build())
             .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(elasticSearchHost), elasticSearchPort));
   }

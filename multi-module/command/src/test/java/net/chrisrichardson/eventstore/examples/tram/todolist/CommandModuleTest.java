@@ -2,6 +2,7 @@ package net.chrisrichardson.eventstore.examples.tram.todolist;
 
 
 import net.chrisrichardson.eventstore.examples.tram.todolist.command.*;
+import net.chrisrichardson.eventstore.examples.tram.todolist.common.Utils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +11,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {TodoCommandConfiguration.class})
@@ -27,7 +26,7 @@ public class CommandModuleTest {
 
   @Test
   public void testCreate() {
-    String title = UUID.randomUUID().toString();
+    String title = Utils.generateUniqueString();
     Long id = todoCommandService.create(new CreateTodoRequest(title, false, 0)).getId();
     Todo todo = todoRepository.findOne(id);
     Assert.assertNotNull(todo);
@@ -36,8 +35,8 @@ public class CommandModuleTest {
 
   @Test
   public void testUpdate() {
-    Todo todo = todoRepository.save(new Todo(UUID.randomUUID().toString(), false, 9));
-    String title = UUID.randomUUID().toString();
+    Todo todo = todoRepository.save(new Todo(Utils.generateUniqueString(), false, 9));
+    String title = Utils.generateUniqueString();
     todoCommandService.update(todo.getId(), new UpdateTodoRequest(title, false, 0));
     todo = todoRepository.findOne(todo.getId());
     Assert.assertNotNull(todo);
@@ -46,7 +45,7 @@ public class CommandModuleTest {
 
   @Test
   public void testDelete() {
-    Todo todo = todoRepository.save(new Todo(UUID.randomUUID().toString(), false, 9));
+    Todo todo = todoRepository.save(new Todo(Utils.generateUniqueString(), false, 9));
     todoCommandService.delete(todo.getId());
     Assert.assertNull(todoRepository.findOne(todo.getId()));
   }

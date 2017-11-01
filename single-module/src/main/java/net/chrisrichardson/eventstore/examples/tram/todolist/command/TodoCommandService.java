@@ -24,34 +24,32 @@ public class TodoCommandService {
     Todo todo = new Todo(createTodoRequest.getTitle(), createTodoRequest.isCompleted(), createTodoRequest.getOrder());
     todo = todoRepository.save(todo);
 
-	domainEventPublisher.publish(Todo.class,
-		todo.getId(),
-		Collections.singletonList(new TodoCreated(todo.getId(),
-			todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder())));
+    domainEventPublisher.publish(Todo.class,
+            todo.getId(),
+            Collections.singletonList(new TodoCreated(todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder())));
 
     return todo;
   }
 
   public void update(Long id, UpdateTodoRequest updateTodoRequest) {
-	Todo todo = todoRepository.findOne(id);
+    Todo todo = todoRepository.findOne(id);
 
-	if (todo == null) {
-		return;
-	}
+    if (todo == null) {
+      throw new TodoNotFoundException(id);
+    }
 
-	todo.setTitle(updateTodoRequest.getTitle());
-	todo.setCompleted(updateTodoRequest.isCompleted());
-	todo.setExecutionOrder(updateTodoRequest.getOrder());
-	todoRepository.save(todo);
+    todo.setTitle(updateTodoRequest.getTitle());
+    todo.setCompleted(updateTodoRequest.isCompleted());
+    todo.setExecutionOrder(updateTodoRequest.getOrder());
+    todoRepository.save(todo);
 
-	domainEventPublisher.publish(Todo.class,
-	        id,
-	        Collections.singletonList(new TodoUpdated(todo.getId(),
-		            todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder())));
+    domainEventPublisher.publish(Todo.class,
+            id,
+            Collections.singletonList(new TodoUpdated(todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder())));
   }
 
   public void delete(Long id) {
-  	todoRepository.delete(id);
-	domainEventPublisher.publish(Todo.class, id, Collections.singletonList(new TodoDeleted(id)));
+    todoRepository.delete(id);
+    domainEventPublisher.publish(Todo.class, id, Collections.singletonList(new TodoDeleted()));
   }
 }

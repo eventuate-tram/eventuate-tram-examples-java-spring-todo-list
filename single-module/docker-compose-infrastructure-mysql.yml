@@ -28,13 +28,14 @@ kafka:
     - KAFKA_HEAP_OPTS=-Xmx320m -Xms320m
     - ZOOKEEPER_SERVERS=zookeeper:2181
 
-postgres:
-  build: ./postgres
+mysql:
+  build: ./mysql
   ports:
-    - 5432:5432
+    - 3306:3306
   environment:
-    POSTGRES_USER: eventuate
-    POSTGRES_PASSWORD: eventuate
+    - MYSQL_ROOT_PASSWORD=rootpassword
+    - MYSQL_USER=mysqluser
+    - MYSQL_PASSWORD=mysqlpw
 
 adminer:
     image: adminer:4.3.1-standalone
@@ -42,26 +43,21 @@ adminer:
         - 9080:8080
 
 tramcdcservice:
-  image: test-eventuate-tram-cdc-mysql-service
+  image: eventuateio/eventuate-tram-cdc-mysql-service:0.0.1
   ports:
     - "8099:8080"
   links:
-    - postgres
+    - mysql
     - kafka
     - zookeeper
   environment:
-    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
-    SPRING_DATASOURCE_USERNAME: eventuate
-    SPRING_DATASOURCE_PASSWORD: eventuate
-    SPRING_DATASOURCE_TEST_ON_BORROW: "true"
-    SPRING_DATASOURCE_VALIDATION_QUERY: SELECT 1
-    SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-    EVENTUATELOCAL_CDC_POLLING_INTERVAL_IN_MILLISECONDS: 500
-    EVENTUATELOCAL_CDC_MAX_EVENTS_PER_POLLING: 1000
-    EVENTUATELOCAL_CDC_MAX_ATTEMPTS_FOR_POLLING: 100
-    EVENTUATELOCAL_CDC_POLLING_RETRY_INTERVAL_IN_MILLISECONDS: 500
+    SPRING_DATASOURCE_URL: jdbc:mysql://mysql/eventuate
+    SPRING_DATASOURCE_USERNAME: mysqluser
+    SPRING_DATASOURCE_PASSWORD: mysqlpw
+    SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
     EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+    EVENTUATELOCAL_CDC_DB_USER_NAME: root
+    EVENTUATELOCAL_CDC_DB_PASSWORD: rootpassword
     EVENTUATELOCAL_CDC_BINLOG_CLIENT_ID: 1234567890
     EVENTUATELOCAL_CDC_SOURCE_TABLE_NAME: message
-    SPRING_PROFILES_ACTIVE: EventuatePolling

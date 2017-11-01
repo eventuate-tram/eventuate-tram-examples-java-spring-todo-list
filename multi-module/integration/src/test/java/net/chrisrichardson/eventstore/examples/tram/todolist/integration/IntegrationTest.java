@@ -50,7 +50,7 @@ public class IntegrationTest {
     while (!result && (attempts <= maxAttempts)) {
       Thread.sleep(waitTimeInMilliseconds);
       List<TodoView> todoViews = todoViewService.search(value);
-      result = todoViews.stream().anyMatch(view -> expectedId.equals(view.getId())) == shouldBeFound;
+      result = todoViews.stream().anyMatch(view -> expectedId.toString().equals(view.getId())) == shouldBeFound;
     }
 
     return result;

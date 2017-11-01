@@ -4,8 +4,6 @@ import io.eventuate.tram.events.common.DomainEvent;
 
 public class TodoCreated implements DomainEvent {
 
-  private Long id;
-
   private String title;
 
   private boolean completed;
@@ -15,19 +13,10 @@ public class TodoCreated implements DomainEvent {
   public TodoCreated() {
   }
 
-  public TodoCreated(Long id, String title, boolean completed, int executionOrder) {
-    this.id = id;
+  public TodoCreated(String title, boolean completed, int executionOrder) {
     this.title = title;
     this.completed = completed;
     this.executionOrder = executionOrder;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public String getTitle() {

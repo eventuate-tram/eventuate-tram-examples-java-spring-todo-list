@@ -1,6 +1,7 @@
 package net.chrisrichardson.eventstore.examples.tram.todolist;
 
 
+import net.chrisrichardson.eventstore.examples.tram.todolist.common.Utils;
 import net.chrisrichardson.eventstore.examples.tram.todolist.view.TodoView;
 import net.chrisrichardson.eventstore.examples.tram.todolist.view.TodoViewConfiguration;
 import net.chrisrichardson.eventstore.examples.tram.todolist.view.TodoViewService;
@@ -26,7 +27,7 @@ public class ViewModuleTest {
 
   @Test
   public void testIndexSearchAndRemove() throws Exception {
-    Long id = System.nanoTime();
+    String id = Utils.generateUniqueString();
     String title = "test";
     TodoView todoView = new TodoView(id, title, false, 0);
 

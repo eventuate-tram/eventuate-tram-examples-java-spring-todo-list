@@ -8,8 +8,6 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +18,10 @@ import java.util.List;
 
 @Service
 public class TodoViewService {
-
-  private Logger logger = LoggerFactory.getLogger(getClass());
-
   @Autowired
   private TransportClient transportClient;
+
+  private ObjectMapper objectMapper = new ObjectMapper();
 
   public List<TodoView> search(String value) {
 
@@ -41,10 +38,10 @@ public class TodoViewService {
 
     for (SearchHit searchHit : response.getHits()) {
       try {
-        result.add(new ObjectMapper().readValue(searchHit.getSourceAsString(), TodoView.class));
+        result.add(objectMapper.readValue(searchHit.getSourceAsString(), TodoView.class));
       }
       catch (IOException e) {
-          logger.error(e.getMessage(), e);
+        throw new RuntimeException(e);
       }
     }
 
@@ -54,16 +51,16 @@ public class TodoViewService {
   public void index(TodoView todoView) {
     try {
       IndexResponse ir = transportClient
-          .prepareIndex(TodoView.INDEX, TodoView.TYPE, todoView.getId().toString())
-          .setSource(new ObjectMapper().writeValueAsString(todoView), XContentType.JSON)
+          .prepareIndex(TodoView.INDEX, TodoView.TYPE, todoView.getId())
+          .setSource(objectMapper.writeValueAsString(todoView), XContentType.JSON)
           .get();
     }
     catch (JsonProcessingException e) {
-      logger.error(e.getMessage(), e);
+        throw new RuntimeException(e);
     }
   }
 
-  public void remove(Long id) {
-    transportClient.prepareDelete(TodoView.INDEX, TodoView.TYPE, id.toString()).get();
+  public void remove(String id) {
+    transportClient.prepareDelete(TodoView.INDEX, TodoView.TYPE, id).get();
   }
 }

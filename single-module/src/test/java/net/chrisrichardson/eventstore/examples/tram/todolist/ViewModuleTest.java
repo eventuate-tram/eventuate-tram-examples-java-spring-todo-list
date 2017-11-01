@@ -1,7 +1,7 @@
 package net.chrisrichardson.eventstore.examples.tram.todolist;
 
 
-import net.chrisrichardson.eventstore.examples.tram.todolist.command.*;
+import net.chrisrichardson.eventstore.examples.tram.todolist.common.Utils;
 import net.chrisrichardson.eventstore.examples.tram.todolist.view.TodoView;
 import net.chrisrichardson.eventstore.examples.tram.todolist.view.TodoViewConfiguration;
 import net.chrisrichardson.eventstore.examples.tram.todolist.view.TodoViewService;
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
-import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {TodoViewConfiguration.class})
@@ -28,7 +27,7 @@ public class ViewModuleTest {
 
   @Test
   public void testIndexSearchAndRemove() throws Exception {
-    Long id = System.nanoTime();
+    String id = Utils.generateUniqueString();
     String title = "test";
     TodoView todoView = new TodoView(id, title, false, 0);
 

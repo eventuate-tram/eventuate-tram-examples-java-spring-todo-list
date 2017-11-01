@@ -9,7 +9,7 @@ public class TodoView {
   public static final String INDEX = "todos";
   public static final String TYPE = "todo";
 
-  private Long id;
+  private String id;
 
   private String title;
 
@@ -20,26 +20,18 @@ public class TodoView {
   public TodoView() {
   }
 
-  public TodoView(Long id, String title, boolean completed, int executionOrder) {
+  public TodoView(String id, String title, boolean completed, int executionOrder) {
     this.id = id;
     this.title = title;
     this.completed = completed;
     this.executionOrder = executionOrder;
   }
 
-  public TodoView(TodoCreated todoCreated) {
-  	this(todoCreated.getId(), todoCreated.getTitle(), todoCreated.isCompleted(), todoCreated.getExecutionOrder());
-  }
-
-  public TodoView(TodoUpdated todoUpdated) {
-  	this(todoUpdated.getId(), todoUpdated.getTitle(), todoUpdated.isCompleted(), todoUpdated.getExecutionOrder());
-  }
-
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
