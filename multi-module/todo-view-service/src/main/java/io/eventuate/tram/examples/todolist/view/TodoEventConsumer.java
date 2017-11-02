@@ -15,7 +15,7 @@ public class TodoEventConsumer {
 
   public DomainEventHandlers domainEventHandlers() {
     return DomainEventHandlersBuilder
-            .forAggregateType("net.chrisrichardson.eventstore.examples.tram.todolist.command.Todo")
+            .forAggregateType("io.eventuate.tram.examples.todolist.command.Todo")
             .onEvent(TodoCreated.class, todoCreatedDomainEventEnvelope -> {
               TodoCreated todoCreated = todoCreatedDomainEventEnvelope.getEvent();
               todoViewService.index(new TodoView(todoCreatedDomainEventEnvelope.getAggregateId(),

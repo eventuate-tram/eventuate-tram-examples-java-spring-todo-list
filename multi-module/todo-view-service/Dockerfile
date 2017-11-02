@@ -1,3 +1,3 @@
 FROM java:openjdk-8u111-alpine
-CMD java ${JAVA_OPTS} -jar view.jar
-COPY build/libs/view.jar .
+CMD java ${JAVA_OPTS} -jar todo-view-service.jar
+COPY build/libs/todo-view-service.jar .

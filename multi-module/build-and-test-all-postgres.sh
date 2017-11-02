@@ -3,11 +3,20 @@
 
 . ./set-env-postgres.sh
 
-docker-compose -f docker-compose-infrastructure-postgres.yml down
+docker-compose -f docker-compose-postgres.yml down
+docker-compose -f docker-compose-postgres.yml up -d --build postgres
 
-./start-infrastructure-postgres.sh
+./wait-for-postgres.sh
+
+docker-compose -f docker-compose-postgres.yml up -d --build tramcdcservice
+
+./wait-for-infrastructure.sh
+
+docker-compose -f docker-compose-postgres.yml up -d --build
+
+./wait-for-todo-list-services.sh
 
 ./gradlew cleanTest
 ./gradlew build
 
-docker-compose -f docker-compose-infrastructure-postgres.yml down
+docker-compose -f docker-compose-postgres.yml down

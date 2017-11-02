@@ -6,4 +6,4 @@ docker-compose -f docker-compose-infrastructure-mysql.yml up -d --build mysql
 
 docker-compose -f docker-compose-infrastructure-mysql.yml up -d --build
 
-#./wait-for-infrastructure.sh
+./wait-for-infrastructure.sh

@@ -3,11 +3,20 @@
 
 . ./set-env.sh
 
-docker-compose -f docker-compose-infrastructure-mysql.yml down
+docker-compose -f docker-compose-mysql.yml down
+docker-compose -f docker-compose-mysql.yml up -d --build mysql
 
-./start-infrastructure-mysql.sh
+./wait-for-mysql.sh
+
+docker-compose -f docker-compose-mysql.yml up -d --build tramcdcservice
+
+./wait-for-infrastructure.sh
+
+docker-compose -f docker-compose-mysql.yml up -d --build
+
+./wait-for-todo-list-services.sh
 
 ./gradlew cleanTest
 ./gradlew build
 
-docker-compose -f docker-compose-infrastructure-mysql.yml down
+docker-compose -f docker-compose-mysql.yml down

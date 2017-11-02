@@ -24,7 +24,7 @@ public class SwaggerConfiguration {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("net.chrisrichardson.eventstore.examples.tram.todolist"))
+                .apis(RequestHandlerSelectors.basePackage("io.eventuate.tram.examples.todolist"))
                 .build()
                 .pathMapping("/")
                 .genericModelSubstitutes(ResponseEntity.class, CompletableFuture.class)
