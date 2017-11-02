@@ -1,6 +1,6 @@
 include "common"
-include "command"
-include "view"
+include "todo-service"
+include "todo-view-service"
 //include "integration"
 
 rootProject.name = 'eventuate-tram-examples-java-spring-todo-list'
