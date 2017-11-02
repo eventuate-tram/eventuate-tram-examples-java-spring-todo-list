@@ -1,6 +1,5 @@
 #! /bin/bash -e
 
-./gradlew clean
 ./gradlew assemble
 
 docker-compose -f docker-compose-mysql.yml up -d --build mysql

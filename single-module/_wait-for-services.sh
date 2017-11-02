@@ -1,7 +1,11 @@
 #! /bin/bash
 
+host=$1
+ports=$2
+
+shift 2
+
 done=false
-host=$DOCKER_HOST_IP
 while [[ "$done" = false ]]; do
 	for port in $ports; do
 		curl -q http://${host}:${port}/health >& /dev/null

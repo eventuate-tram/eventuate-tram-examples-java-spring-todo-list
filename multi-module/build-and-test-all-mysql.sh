@@ -16,7 +16,6 @@ docker-compose -f docker-compose-mysql.yml up -d --build
 
 ./wait-for-todo-list-services.sh
 
-./gradlew cleanTest
 ./gradlew build
 
 docker-compose -f docker-compose-mysql.yml down

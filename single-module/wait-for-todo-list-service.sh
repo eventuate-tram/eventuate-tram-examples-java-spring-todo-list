@@ -1,5 +1,5 @@
 #! /bin/bash
 
-export ports="8080"
+export ports=
 
-./_wait-for-services.sh
+./_wait-for-services.sh $DOCKER_HOST_IP "8080"

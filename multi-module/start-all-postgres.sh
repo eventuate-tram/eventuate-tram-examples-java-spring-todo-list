@@ -1,6 +1,5 @@
 #! /bin/bash -e
 
-./gradlew clean
 ./gradlew assemble
 
 docker-compose -f docker-compose-postgres.yml  up -d --build postgres

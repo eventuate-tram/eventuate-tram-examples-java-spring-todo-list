@@ -17,18 +17,18 @@ public class TodoEventConsumer {
   public DomainEventHandlers domainEventHandlers() {
     return DomainEventHandlersBuilder
             .forAggregateType(Todo.class.getName())
-            .onEvent(TodoCreated.class, todoCreatedDomainEventEnvelope -> {
-              TodoCreated todoCreated = todoCreatedDomainEventEnvelope.getEvent();
-              todoViewService.index(new TodoView(todoCreatedDomainEventEnvelope.getAggregateId(),
+            .onEvent(TodoCreated.class, dee -> {
+              TodoCreated todoCreated = dee.getEvent();
+              todoViewService.index(new TodoView(dee.getAggregateId(),
                   todoCreated.getTitle(), todoCreated.isCompleted(), todoCreated.getExecutionOrder()));
             })
-            .onEvent(TodoUpdated.class, todoUpdatedDomainEventEnvelope -> {
-              TodoUpdated todoUpdated = todoUpdatedDomainEventEnvelope.getEvent();
-              todoViewService.index(new TodoView(todoUpdatedDomainEventEnvelope.getAggregateId(),
+            .onEvent(TodoUpdated.class, dee -> {
+              TodoUpdated todoUpdated = dee.getEvent();
+              todoViewService.index(new TodoView(dee.getAggregateId(),
                   todoUpdated.getTitle(), todoUpdated.isCompleted(), todoUpdated.getExecutionOrder()));
             })
-            .onEvent(TodoDeleted.class, todoDeleteDomainEventEnvelope ->
-                    todoViewService.remove(todoDeleteDomainEventEnvelope.getAggregateId()))
+            .onEvent(TodoDeleted.class, dee ->
+                    todoViewService.remove(dee.getAggregateId()))
             .build();
   }
 }

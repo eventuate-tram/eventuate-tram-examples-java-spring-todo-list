@@ -7,7 +7,6 @@ docker-compose -f docker-compose-infrastructure-postgres.yml down
 
 ./start-infrastructure-postgres.sh
 
-./gradlew cleanTest
 ./gradlew build
 
 docker-compose -f docker-compose-infrastructure-postgres.yml down
