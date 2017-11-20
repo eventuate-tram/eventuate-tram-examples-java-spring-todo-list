@@ -3,4 +3,4 @@ include "todo-service"
 include "todo-view-service"
 include "end-to-end-tests"
 
-rootProject.name = 'eventuate-tram-examples-java-spring-todo-list'
+rootProject.name = 'eventuate-tram-examples-java-spring-todo-list-multi-module'

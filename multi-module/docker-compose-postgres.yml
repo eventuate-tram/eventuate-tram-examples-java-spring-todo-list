@@ -63,7 +63,7 @@ elasticsearch:
       - "9300:9300"
 
 zookeeper:
-  image: eventuateio/eventuateio-local-zookeeper:0.12.1
+  image: eventuateio/eventuateio-local-zookeeper:0.15.0
   ports:
     - 2181:2181
     - 2888:2888
@@ -71,7 +71,7 @@ zookeeper:
 
 
 kafka:
-  image: eventuateio/eventuateio-local-kafka:0.12.1
+  image: eventuateio/eventuateio-local-kafka:0.15.0
   ports:
     - 9092:9092
   links:
@@ -82,7 +82,7 @@ kafka:
     - ZOOKEEPER_SERVERS=zookeeper:2181
 
 postgres:
-  build: ./postgres
+  image: eventuateio/eventuate-tram-postgres:0.3.0.RELEASE
   ports:
     - 5432:5432
   environment:
@@ -95,7 +95,7 @@ adminer:
         - 9080:8080
 
 tramcdcservice:
-  image: test-eventuate-tram-cdc-mysql-service
+  image: eventuateio/eventuate-tram-cdc-mysql-service:0.3.0.RELEASE
   ports:
     - "8099:8080"
   links:
