@@ -7,12 +7,13 @@ jobs:
       - checkout
       - restore_cache:
           key: eventuate-tram-examples-java-spring-todo-list-{{ checksum "multi-module/build.gradle" }}
-      - run: |
-        export TERM=dumb
-        cd single-module
-        ./gradlew testClasses
-        cd ../multi-module
-        ./gradlew testClasses
+      - run: 
+        command: |
+          export TERM=dumb
+          cd single-module
+          ./gradlew testClasses
+          cd ../multi-module
+          ./gradlew testClasses
       - save_cache:
           paths:
             - ~/.gradle
