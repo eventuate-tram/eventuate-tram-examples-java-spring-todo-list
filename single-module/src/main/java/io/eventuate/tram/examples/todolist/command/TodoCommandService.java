@@ -1,5 +1,6 @@
 package io.eventuate.tram.examples.todolist.command;
 
+import io.eventuate.tram.events.common.DomainEvent;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.examples.todolist.common.TodoCreated;
 import io.eventuate.tram.examples.todolist.common.TodoDeleted;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import static java.util.Arrays.asList;
 
 @Service
 @Transactional
@@ -24,11 +25,17 @@ public class TodoCommandService {
     Todo todo = new Todo(createTodoRequest.getTitle(), createTodoRequest.isCompleted(), createTodoRequest.getOrder());
     todo = todoRepository.save(todo);
 
-    domainEventPublisher.publish(Todo.class,
-            todo.getId(),
-            Collections.singletonList(new TodoCreated(todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder())));
+    publishTodoEvent(todo, new TodoCreated(todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder()));
 
     return todo;
+  }
+
+  private void publishTodoEvent(Todo todo, DomainEvent... domainEvents) {
+    domainEventPublisher.publish(Todo.class, todo.getId(), asList(domainEvents));
+  }
+
+  private void publishTodoEvent(Long id, DomainEvent... domainEvents) {
+    domainEventPublisher.publish(Todo.class, id, asList(domainEvents));
   }
 
   public void update(Long id, UpdateTodoRequest updateTodoRequest) {
@@ -43,13 +50,11 @@ public class TodoCommandService {
     todo.setExecutionOrder(updateTodoRequest.getOrder());
     todoRepository.save(todo);
 
-    domainEventPublisher.publish(Todo.class,
-            id,
-            Collections.singletonList(new TodoUpdated(todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder())));
+    publishTodoEvent(todo, new TodoUpdated(todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder()));
   }
 
   public void delete(Long id) {
     todoRepository.delete(id);
-    domainEventPublisher.publish(Todo.class, id, Collections.singletonList(new TodoDeleted()));
+    publishTodoEvent(id, new TodoDeleted());
   }
 }

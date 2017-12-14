@@ -40,11 +40,84 @@ There are two versions of the application:
 * `single-module` - a single module Gradle project for a monolithic version of the application.
 It is the easiest to get started with.
 * `multi-module` - a multi-module Gradle project for the microservices-based version of the application.
-It consists of a `todo-service`, which creates and updates Todos, and `todo-view-service`, which maintains a [CQRS view](http://microservices.io/patterns/data/cqrs.html view in ElasticSearch
+It consists of a `todo-service`, which creates and updates Todos, and `todo-view-service`, which maintains a [CQRS view](http://microservices.io/patterns/data/cqrs.html) view in ElasticSearch
 
-Note: you do not need to install Gradle since it will be downloaded automatically.
-You just need to have Java 8 installed.
+# How it works
 
+The Todo application uses the [Eventuate Tram framework](https://github.com/eventuate-tram/eventuate-tram-core) to publish and consume domain events.
+
+
+## Domain event publisher
+
+The `TodoCommandService` publishes an event when it creates, updates, or deletes a `Todo`.
+It uses the `DomainEventPublisher`, which is implemented by the [Eventuate Tram framework](https://github.com/eventuate-tram/eventuate-tram-core).
+`DomainEventPublisher` publishes the event as part of the transaction that updates the database.
+If the transactions commits the event will be published.
+Conversely, if the transaction is rolled back, then the event is not published.
+
+```java
+@Service
+@Transactional
+public class TodoCommandService {
+
+  @Autowired
+  private TodoRepository todoRepository;
+
+  @Autowired
+  private DomainEventPublisher domainEventPublisher;
+
+  public Todo create(CreateTodoRequest createTodoRequest) {
+    Todo todo = new Todo(createTodoRequest.getTitle(), createTodoRequest.isCompleted(), createTodoRequest.getOrder());
+    todo = todoRepository.save(todo);
+
+    publishTodoEvent(todo, new TodoCreated(todo.getTitle(), todo.isCompleted(), todo.getExecutionOrder()));
+
+    return todo;
+  }
+
+  private void publishTodoEvent(Todo todo, DomainEvent... domainEvents) {
+    domainEventPublisher.publish(Todo.class, todo.getId(), asList(domainEvents));
+  }
+
+  ...
+```
+
+## Domain event consumer
+
+The CQRS view code subscribes to domain events published by the `TodoCommandService`.
+It defines `DomainEventDispatcher` @Bean to invoke the event handlers defined by `TodoEventConsumer`.
+The `DomainEventDispatcher` class is provided by the [Eventuate Tram framework](https://github.com/eventuate-tram/eventuate-tram-core).
+It handles message de-duplication to ensure that the event handlers are idempotent.
+
+```
+@Configuration
+public class TodoViewConfiguration {
+
+  @Bean
+  public DomainEventDispatcher domainEventDispatcher(TodoEventConsumer todoEventConsumer, MessageConsumer messageConsumer) {
+    return new DomainEventDispatcher("todoServiceEvents", todoEventConsumer.domainEventHandlers(), messageConsumer);
+  }
+
+```
+
+The `TodoEventConsumer` defines the event handlers, which update Elasticsearch.
+
+```
+public class TodoEventConsumer {
+
+  @Autowired
+  private TodoViewService todoViewService;
+
+  public DomainEventHandlers domainEventHandlers() {
+    return DomainEventHandlersBuilder
+            .forAggregateType(Todo.class.getName())
+            .onEvent(TodoCreated.class, dee -> {
+              TodoCreated todoCreated = dee.getEvent();
+              todoViewService.index(new TodoView(dee.getAggregateId(),
+                  todoCreated.getTitle(), todoCreated.isCompleted(), todoCreated.getExecutionOrder()));
+            })
+
+```
 
 # Got questions?
 
@@ -62,6 +135,9 @@ Don't forget to take a look at the other [Eventuate Tram examples](http://eventu
 
 
 # Building and running
+
+Note: you do not need to install Gradle since it will be downloaded automatically.
+You just need to have Java 8 installed.
 
 First, build the application
 
