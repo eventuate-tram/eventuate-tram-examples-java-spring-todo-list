@@ -89,7 +89,7 @@ It defines `DomainEventDispatcher` @Bean to invoke the event handlers defined by
 The `DomainEventDispatcher` class is provided by the [Eventuate Tram framework](https://github.com/eventuate-tram/eventuate-tram-core).
 It handles message de-duplication to ensure that the event handlers are idempotent.
 
-```
+```java
 @Configuration
 public class TodoViewConfiguration {
 
@@ -102,7 +102,7 @@ public class TodoViewConfiguration {
 
 The `TodoEventConsumer` defines the event handlers, which update Elasticsearch.
 
-```
+```java
 public class TodoEventConsumer {
 
   @Autowired
