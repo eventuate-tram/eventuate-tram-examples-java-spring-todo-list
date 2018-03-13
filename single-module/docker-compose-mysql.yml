@@ -31,7 +31,7 @@ elasticsearch:
       - "9300:9300"
 
 zookeeper:
-  image: eventuateio/eventuateio-local-zookeeper:0.15.0
+  image: eventuateio/eventuateio-local-zookeeper:0.17.0.RELEASE
   ports:
     - 2181:2181
     - 2888:2888
@@ -39,7 +39,7 @@ zookeeper:
 
 
 kafka:
-  image: eventuateio/eventuateio-local-kafka:0.15.0
+  image: eventuateio/eventuateio-local-kafka:0.17.0.RELEASE
   ports:
     - 9092:9092
   links:
@@ -50,7 +50,7 @@ kafka:
     - ZOOKEEPER_SERVERS=zookeeper:2181
 
 mysql:
-  image: eventuateio/eventuate-tram-mysql:0.3.0.RELEASE
+  image: eventuateio/eventuate-tram-mysql:0.6.0.RELEASE
   ports:
     - 3306:3306
   environment:
@@ -64,7 +64,7 @@ adminer:
         - 9080:8080
 
 tramcdcservice:
-  image: eventuateio/eventuate-tram-cdc-mysql-service:0.3.0.RELEASE
+  image: eventuateio/eventuate-tram-cdc-mysql-service:0.6.0.RELEASE
   ports:
     - "8099:8080"
   links:
