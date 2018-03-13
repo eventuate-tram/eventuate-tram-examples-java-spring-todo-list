@@ -1,5 +1,8 @@
 # Todo List example application
 
+
+This example demonstrates how to develop microservices with Spring Boot, JPA, Apache Kafka, ElasticSearch and the Eventuate Tram framework.
+
 ## The problem: atomically updating data and publishing events/messages
 
 It's challenging to atomically update a data (e.g. a Domain-Driven design aggregate) and publish a message, such as a domain event.
@@ -7,7 +10,7 @@ The traditional approach of using 2PC/JTA isn't a good fit for modern applicatio
 
 The [Eventuate&trade; Tram framework](https://github.com/eventuate-tram/eventuate-tram-core) implements an alternative mechanism based on the [Application Events](http://microservices.io/patterns/data/application-events.html) pattern.
 When an application creates or updates data, as part of that ACID transaction, it inserts an event into an `EVENTS` or `MESSAGES` table.
-A separate process publishes those events to a message broker, such as Apache Kafka.
+A separate CDC process publishes those events to a message broker, such as Apache Kafka.
 
 
 ## About the Todo list application
@@ -31,9 +34,27 @@ The Todo List application is built using
 * Spring Boot
 * MySQL
 * ElasticSearch
+* Apache Kafka
 
-The application persists the Todo JPA entity in MySQL.
-It also maintains a materialized view of the data in ElasticSearch.
+The following diagram shows the application's architecture.
+
+![TODO architecture](./images/Architecture.png)
+
+The application consists of two services:
+
+* `Todo Service` - implements the REST endpoints for creating, updating and deleting todos.
+The service persists the Todo JPA entity in MySQL.
+Using `Eventuate Tram`, it publishes Todo domain events that are consumed by the `Todo View Service`.
+
+* `Todo View Service` - implements a REST endpoint for querying the todos.
+It maintains a CQRS view of the todos in ElasticSearch.
+
+The `Todo Service` publishes events using Eventuate Tram.
+Eventuate Tram inserts events into the `MESSAGE` table as part of the ACID transaction that updates the TODO table.
+The Eventuate Tram CDC service tracks inserts into the `MESSAGE` table using the MySQL binlog and publishes messages to Apache Kafka.
+The `Todo View Service` subscribes to the events and updates ElasticSearch.
+
+## Two flavors of the application: monolithic and microservices
 
 There are two versions of the application:
 
