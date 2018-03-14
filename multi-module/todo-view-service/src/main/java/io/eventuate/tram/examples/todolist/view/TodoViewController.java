@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/todoviews")
+@RequestMapping(path = "/todos")
 public class TodoViewController {
 
   @Autowired
   private TodoViewService todoViewService;
 
   @RequestMapping(method = RequestMethod.GET)
-  public List<TodoView> search(@RequestParam String searchValue) {
-    return todoViewService.search(searchValue);
+  public List<TodoView> search(@RequestParam String search) {
+    return todoViewService.search(search);
   }
 }
