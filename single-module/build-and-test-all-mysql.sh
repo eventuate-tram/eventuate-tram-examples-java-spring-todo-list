@@ -3,7 +3,7 @@
 
 . ./set-env.sh
 
-docker-compose -f docker-compose-mysql.yml down
+docker-compose -f docker-compose-mysql.yml down --remove-orphans -v
 
 docker-compose -f docker-compose-mysql.yml up -d --build elasticsearch
 docker-compose -f docker-compose-mysql.yml up -d --build mysql
@@ -16,4 +16,4 @@ docker-compose -f docker-compose-mysql.yml up -d --build tramcdcservice
 
 ./gradlew build
 
-docker-compose -f docker-compose-mysql.yml down
+docker-compose -f docker-compose-mysql.yml down --remove-orphans -v
