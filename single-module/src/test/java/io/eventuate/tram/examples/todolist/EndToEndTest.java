@@ -84,9 +84,9 @@ public class EndToEndTest {
   private List<TodoView> search(String value) {
     try {
       return Arrays.asList(objectMapper.readValue(given()
-              .queryParam("searchValue", value)
+              .queryParam("search", value)
               .when()
-              .get(baseUrl() + "/todoviews")
+              .get(baseUrl() + "/todos")
               .then()
               .statusCode(200)
               .extract()
