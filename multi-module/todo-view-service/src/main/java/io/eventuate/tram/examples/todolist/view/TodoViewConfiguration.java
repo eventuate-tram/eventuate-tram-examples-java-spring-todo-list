@@ -1,5 +1,6 @@
 package io.eventuate.tram.examples.todolist.view;
 
+import io.eventuate.tram.consumer.common.NoopDuplicateMessageDetector;
 import io.eventuate.tram.consumer.kafka.TramConsumerKafkaConfiguration;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.messaging.consumer.MessageConsumer;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Import;
 import java.net.InetAddress;
 
 @Configuration
-@Import({TramConsumerKafkaConfiguration.class})
+@Import({TramConsumerKafkaConfiguration.class, NoopDuplicateMessageDetector.class})
 public class TodoViewConfiguration {
 
   @Value("${elasticsearch.host}")

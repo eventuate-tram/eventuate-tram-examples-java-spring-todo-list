@@ -32,11 +32,7 @@ public class TodoCommandService {
   }
 
   public void update(Long id, UpdateTodoRequest updateTodoRequest) {
-    Todo todo = todoRepository.findOne(id);
-
-    if (todo == null) {
-      throw new TodoNotFoundException(id);
-    }
+    Todo todo = todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException(id));
 
     todo.setTitle(updateTodoRequest.getTitle());
     todo.setCompleted(updateTodoRequest.isCompleted());
@@ -49,7 +45,7 @@ public class TodoCommandService {
   }
 
   public void delete(Long id) {
-    todoRepository.delete(id);
+    todoRepository.deleteById(id);
     domainEventPublisher.publish(Todo.class, id, Collections.singletonList(new TodoDeleted()));
   }
 }

@@ -27,7 +27,7 @@ public class CommandModuleTest {
   public void testCreate() {
     String title = Utils.generateUniqueString();
     Long id = todoCommandService.create(new CreateTodoRequest(title, false, 0)).getId();
-    Todo todo = todoRepository.findOne(id);
+    Todo todo = todoRepository.findById(id).orElse(null);
     Assert.assertNotNull(todo);
     Assert.assertEquals(title, todo.getTitle());
   }
@@ -37,7 +37,7 @@ public class CommandModuleTest {
     Todo todo = todoRepository.save(new Todo(Utils.generateUniqueString(), false, 9));
     String title = Utils.generateUniqueString();
     todoCommandService.update(todo.getId(), new UpdateTodoRequest(title, false, 0));
-    todo = todoRepository.findOne(todo.getId());
+    todo = todoRepository.findById(todo.getId()).orElse(null);
     Assert.assertNotNull(todo);
     Assert.assertEquals(title, todo.getTitle());
   }
@@ -46,6 +46,6 @@ public class CommandModuleTest {
   public void testDelete() {
     Todo todo = todoRepository.save(new Todo(Utils.generateUniqueString(), false, 9));
     todoCommandService.delete(todo.getId());
-    Assert.assertNull(todoRepository.findOne(todo.getId()));
+    Assert.assertFalse(todoRepository.findById(todo.getId()).isPresent());
   }
 }
