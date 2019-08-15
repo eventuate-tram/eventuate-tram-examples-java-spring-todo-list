@@ -9,7 +9,7 @@ docker-compose -f docker-compose-postgres.yml up -d --build postgres
 
 ./wait-for-postgres.sh
 
-docker-compose -f docker-compose-postgres.yml up -d --build tramcdcservice
+docker-compose -f docker-compose-postgres.yml up -d --build cdcservice
 
 ./wait-for-infrastructure.sh
 

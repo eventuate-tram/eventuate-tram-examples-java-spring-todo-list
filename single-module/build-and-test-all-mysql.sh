@@ -10,7 +10,7 @@ docker-compose -f docker-compose-mysql.yml up -d --build mysql
 
 ./wait-for-mysql.sh
 
-docker-compose -f docker-compose-mysql.yml up -d --build tramcdcservice
+docker-compose -f docker-compose-mysql.yml up -d --build cdcservice
 
 ./wait-for-infrastructure.sh
 

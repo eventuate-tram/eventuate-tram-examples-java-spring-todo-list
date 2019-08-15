@@ -1,8 +1,9 @@
 package io.eventuate.tram.examples.todolist.view;
 
-import io.eventuate.tram.consumer.kafka.TramConsumerKafkaConfiguration;
+import io.eventuate.tram.consumer.kafka.EventuateTramKafkaMessageConsumerConfiguration;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
-import io.eventuate.tram.messaging.consumer.MessageConsumer;
+import io.eventuate.tram.events.subscriber.DomainEventDispatcherFactory;
+import io.eventuate.tram.events.subscriber.TramEventSubscriberConfiguration;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Import;
 import java.net.InetAddress;
 
 @Configuration
-@Import({TramConsumerKafkaConfiguration.class})
+@Import({EventuateTramKafkaMessageConsumerConfiguration.class, TramEventSubscriberConfiguration.class})
 public class TodoViewConfiguration {
 
   @Value("${elasticsearch.host}")
@@ -30,8 +31,8 @@ public class TodoViewConfiguration {
   }
 
   @Bean
-  public DomainEventDispatcher domainEventDispatcher(TodoEventConsumer todoEventConsumer, MessageConsumer messageConsumer) {
-    return new DomainEventDispatcher("todoServiceEvents", todoEventConsumer.domainEventHandlers(), messageConsumer);
+  public DomainEventDispatcher domainEventDispatcher(TodoEventConsumer todoEventConsumer, DomainEventDispatcherFactory domainEventDispatcherFactory) {
+    return domainEventDispatcherFactory.make("todoServiceEvents", todoEventConsumer.domainEventHandlers());
   }
 
   @Bean
