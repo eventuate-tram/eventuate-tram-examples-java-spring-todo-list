@@ -1,15 +1,19 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.9.2"
     }
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
 }
+
+apply plugin: 'docker-compose'
 
 subprojects {
 
@@ -24,4 +28,32 @@ subprojects {
         eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
     }
 
+}
+
+dockerCompose {
+    environment.put "EVENTUATE_COMMON_VERSION", eventuateCommonImageVersion
+    environment.put "EVENTUATE_KAFKA_VERSION", eventuateMessagingKafkaImageVersion
+    environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
+
+    mysql {
+        projectName = null
+        useComposeFiles = ["docker-compose-mysql.yml"]
+    }
+
+    mysqlinfrastructure {
+        projectName = null
+        useComposeFiles = ["docker-compose-mysql.yml"]
+        startedServices = ["cdcservice", "elasticsearch"]
+    }
+
+    postgres {
+        projectName = null
+        useComposeFiles = ["docker-compose-postgres.yml"]
+    }
+
+    postgresinfrastructure {
+        projectName = null
+        useComposeFiles = ["docker-compose-postgres.yml"]
+        startedServices = ["cdcservice", "elasticsearch"]
+    }
 }

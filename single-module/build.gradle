@@ -1,9 +1,11 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.9.2"
     }
 }
 
@@ -13,6 +15,7 @@ task wrapper(type: Wrapper) {
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'docker-compose'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -60,4 +63,32 @@ dependencies {
     testCompile 'com.jayway.restassured:rest-assured:2.3.0'
     testCompile "com.jayway.jsonpath:json-path:2.3.0"
     testCompile "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
+}
+
+dockerCompose {
+    environment.put "EVENTUATE_COMMON_VERSION", eventuateCommonImageVersion
+    environment.put "EVENTUATE_KAFKA_VERSION", eventuateMessagingKafkaImageVersion
+    environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
+
+    mysql {
+        projectName = null
+        useComposeFiles = ["docker-compose-mysql.yml"]
+    }
+
+    mysqlinfrastructure {
+        projectName = null
+        useComposeFiles = ["docker-compose-mysql.yml"]
+        startedServices = ["cdcservice", "elasticsearch"]
+    }
+
+    postgres {
+        projectName = null
+        useComposeFiles = ["docker-compose-postgres.yml"]
+    }
+
+    postgresinfrastructure {
+        projectName = null
+        useComposeFiles = ["docker-compose-postgres.yml"]
+        startedServices = ["cdcservice", "elasticsearch"]
+    }
 }
