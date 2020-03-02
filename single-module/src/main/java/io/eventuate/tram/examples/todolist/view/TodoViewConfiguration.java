@@ -1,9 +1,9 @@
 package io.eventuate.tram.examples.todolist.view;
 
-import io.eventuate.tram.consumer.kafka.EventuateTramKafkaMessageConsumerConfiguration;
+import io.eventuate.tram.spring.consumer.kafka.EventuateTramKafkaMessageConsumerConfiguration;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcherFactory;
-import io.eventuate.tram.events.subscriber.TramEventSubscriberConfiguration;
+import io.eventuate.tram.spring.events.subscriber.TramEventSubscriberConfiguration;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
