@@ -6,7 +6,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: eventuate-tram-examples-java-spring-todo-list-{{ checksum "multi-module/build.gradle" }}
+          keys:
+            - eventuate-tram-examples-java-spring-todo-list-{{ checksum "multi-module/build.gradle" }}
+            - eventuate-tram-examples-java-spring-todo-list-
       - run:
           command: |
             export TERM=dumb
