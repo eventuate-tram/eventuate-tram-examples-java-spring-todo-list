@@ -2,15 +2,17 @@
 
 . ./set-env-${database}.sh
 
-docker="./gradlew ${database}infrastructureCompose"
+dockerall="./gradlew ${database}Compose"
+dockerinfrastructure="./gradlew ${database}infrastructureCompose"
 
-${docker}Down
+${dockerall}Down
 
-${docker}Build
-${docker}Up
+${dockerinfrastructure}Build
+${dockerinfrastructure}Up
 
 ./wait-for-infrastructure.sh
 
 ./gradlew build
 
-${docker}Down
+${dockerall}Down
+
