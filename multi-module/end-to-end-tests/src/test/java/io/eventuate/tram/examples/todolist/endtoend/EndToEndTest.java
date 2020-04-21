@@ -54,7 +54,7 @@ public class EndToEndTest {
             .path("id")
             .toString();
 
-    Eventually.eventually(300, 100, TimeUnit.MILLISECONDS, () -> {
+    Eventually.eventually(600, 100, TimeUnit.MILLISECONDS, () -> {
         Assert.assertTrue(search("testcreate").stream().anyMatch(view -> id.equals(view.getId())));
     });
 
@@ -67,7 +67,7 @@ public class EndToEndTest {
             .then()
             .statusCode(200);
 
-    Eventually.eventually(300, 100, TimeUnit.MILLISECONDS, () -> {
+    Eventually.eventually(600, 100, TimeUnit.MILLISECONDS, () -> {
         Assert.assertTrue(search("testupdate").stream().anyMatch(view -> id.equals(view.getId())));
     });
 
@@ -77,7 +77,7 @@ public class EndToEndTest {
             .then()
             .statusCode(200);
 
-    Eventually.eventually(300, 100, TimeUnit.MILLISECONDS, () -> {
+    Eventually.eventually(600, 100, TimeUnit.MILLISECONDS, () -> {
         Assert.assertFalse(search("testupdate").stream().anyMatch(view -> id.equals(view.getId())));
     });
   }
