@@ -46,11 +46,15 @@ jobs:
             ./build-and-test-all-postgres.sh
       - run:
           name: Print container logs
-          command: ./.circleci/print-container-logs.sh
+          command: |
+            export TERM=dumb
+            ./.circleci/print-container-logs.sh
           when: always
       - run:
           name: Save container logs
-          command: ./.circleci/save-containers-and-tests.sh
+          command: |
+            export TERM=dumb
+            ./.circleci/save-containers-and-tests.sh
           when: always
       - run:
           name: Save test results
