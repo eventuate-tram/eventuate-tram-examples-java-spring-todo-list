@@ -10,6 +10,8 @@ jobs:
             - eventuate-tram-examples-java-spring-todo-list-{{ checksum "multi-module/build.gradle" }}
             - eventuate-tram-examples-java-spring-todo-list-
       - run:
+          command: ./.circleci/upgrade-docker-compose.sh
+      - run:
           command: |
             export TERM=dumb
             cd single-module
