@@ -23,7 +23,7 @@ jobs:
       - run:
           command: |
             export TERM=dumb
-            ./stop-and-remove-all-docker-containers.sh
+            ./.circleci/stop-and-remove-all-docker-containers.sh
       - run:
           command: |
             export TERM=dumb
@@ -44,6 +44,14 @@ jobs:
             export TERM=dumb
             cd multi-module
             ./build-and-test-all-postgres.sh
+      - run:
+          name: Print container logs
+          command: ./.circleci/print-container-logs.sh
+          when: always
+      - run:
+          name: Save container logs
+          command: ./.circleci/save-containers-and-tests.sh
+          when: always
       - run:
           name: Save test results
           command: |
