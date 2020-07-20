@@ -2,7 +2,17 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     compile project (":common")
+    compile project (":common-swagger")
+    compile project (":todo-service-api-events")
+
+    compile "io.eventuate.tram.core:eventuate-tram-spring-consumer-kafka:$eventuateTramVersion"
+
     compile "org.elasticsearch.client:transport:6.4.3"
+
+    compile 'javax.el:javax.el-api:2.2.5'
+    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    compile "org.springframework.hateoas:spring-hateoas:$springHateoasVersion"
 
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"

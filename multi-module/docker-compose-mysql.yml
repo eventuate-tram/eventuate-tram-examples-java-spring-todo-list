@@ -1,6 +1,6 @@
 version: '3'
 services:
-  todolistcommandservice:
+  todo-service:
     build:
       context: ./todo-service
       args:
@@ -20,7 +20,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
 
-  todolistviewservice:
+  todo-view-service:
     build:
       context: ./todo-view-service
       args:
@@ -30,15 +30,10 @@ services:
     volumes:
       - ./build/libs:/app
     depends_on:
-      - mysql
       - kafka
       - zookeeper
       - elasticsearch
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/eventuate
-      SPRING_DATASOURCE_USERNAME: mysqluser
-      SPRING_DATASOURCE_PASSWORD: mysqlpw
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       SPRING_ELASTICSEARCH_REST_URIS: "elasticsearch:9200"
       ELASTICSEARCH_HOST: elasticsearch
@@ -92,7 +87,7 @@ services:
       ports:
           - 9080:8080
 
-  cdcservice:
+  cdc-service:
     image: eventuateio/eventuate-cdc-service:$EVENTUATE_CDC_VERSION
     ports:
       - "8099:8080"

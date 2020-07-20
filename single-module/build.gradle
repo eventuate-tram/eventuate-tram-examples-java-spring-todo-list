@@ -79,7 +79,7 @@ dockerCompose {
     mysqlinfrastructure {
         projectName = null
         useComposeFiles = ["docker-compose-mysql.yml"]
-        startedServices = ["cdcservice", "elasticsearch"]
+        startedServices = ["cdc-service", "elasticsearch"]
     }
 
     postgres {
@@ -90,6 +90,6 @@ dockerCompose {
     postgresinfrastructure {
         projectName = null
         useComposeFiles = ["docker-compose-postgres.yml"]
-        startedServices = ["cdcservice", "elasticsearch"]
+        startedServices = ["cdc-service", "elasticsearch"]
     }
 }

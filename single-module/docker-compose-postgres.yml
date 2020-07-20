@@ -71,7 +71,7 @@ services:
       ports:
           - 9080:8080
   
-  cdcservice:
+  cdc-service:
     image: eventuateio/eventuate-cdc-service:$EVENTUATE_CDC_VERSION
     ports:
       - "8099:8080"

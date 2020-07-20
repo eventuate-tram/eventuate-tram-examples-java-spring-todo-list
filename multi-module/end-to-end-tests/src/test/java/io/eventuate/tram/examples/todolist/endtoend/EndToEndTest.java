@@ -2,6 +2,9 @@ package io.eventuate.tram.examples.todolist.endtoend;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.eventuate.tram.examples.todolist.view.webapi.TodoViewResponse;
+import io.eventuate.tram.examples.todolist.command.webapi.CreateTodoRequest;
+import io.eventuate.tram.examples.todolist.command.webapi.UpdateTodoRequest;
 import io.eventuate.util.test.async.Eventually;
 import org.junit.Assert;
 import org.junit.Test;
@@ -82,7 +85,7 @@ public class EndToEndTest {
     });
   }
 
-  private List<TodoView> search(String value) {
+  private List<TodoViewResponse> search(String value) {
     try {
       return Arrays.asList(objectMapper.readValue(given()
               .queryParam("search", value)
@@ -92,7 +95,7 @@ public class EndToEndTest {
               .statusCode(200)
               .extract()
               .response()
-              .asString(), TodoView[].class));
+              .asString(), TodoViewResponse[].class));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

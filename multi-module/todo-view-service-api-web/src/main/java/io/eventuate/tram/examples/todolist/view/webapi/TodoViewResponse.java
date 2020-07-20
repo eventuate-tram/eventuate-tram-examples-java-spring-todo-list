@@ -1,22 +1,30 @@
-package io.eventuate.tram.examples.todolist.common;
+package io.eventuate.tram.examples.todolist.view.webapi;
 
-import io.eventuate.tram.events.common.DomainEvent;
 
-public class TodoUpdated implements DomainEvent {
-
+public class TodoViewResponse {
+  private String id;
   private String title;
 
   private boolean completed;
 
   private int executionOrder;
 
-  public TodoUpdated() {
+  public TodoViewResponse() {
   }
 
-  public TodoUpdated(String title, boolean completed, int executionOrder) {
+  public TodoViewResponse(String id, String title, boolean completed, int executionOrder) {
+    this.id = id;
     this.title = title;
     this.completed = completed;
     this.executionOrder = executionOrder;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getTitle() {

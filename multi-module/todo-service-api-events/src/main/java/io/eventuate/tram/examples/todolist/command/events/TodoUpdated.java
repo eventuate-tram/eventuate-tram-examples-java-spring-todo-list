@@ -1,8 +1,8 @@
-package io.eventuate.tram.examples.todolist.common;
+package io.eventuate.tram.examples.todolist.command.events;
 
 import io.eventuate.tram.events.common.DomainEvent;
 
-public class TodoCreated implements DomainEvent {
+public class TodoUpdated implements DomainEvent {
 
   private String title;
 
@@ -10,10 +10,10 @@ public class TodoCreated implements DomainEvent {
 
   private int executionOrder;
 
-  public TodoCreated() {
+  public TodoUpdated() {
   }
 
-  public TodoCreated(String title, boolean completed, int executionOrder) {
+  public TodoUpdated(String title, boolean completed, int executionOrder) {
     this.title = title;
     this.completed = completed;
     this.executionOrder = executionOrder;

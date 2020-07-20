@@ -1,6 +1,6 @@
 version: '3'
 services:
-  todolistcommandservice:
+  todo-service:
     build:
       context: ./todo-service
       args:
@@ -19,9 +19,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: eventuate
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      SPRING_PROFILES_ACTIVE: EventuatePolling
 
-  todolistviewservice:
+  todo-view-service:
     build:
       context: ./todo-view-service
       args:
@@ -31,17 +30,11 @@ services:
     volumes:
       - ./build/libs:/app
     depends_on:
-      - postgres
       - kafka
       - zookeeper
       - elasticsearch
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
-      SPRING_DATASOURCE_USERNAME: eventuate
-      SPRING_DATASOURCE_PASSWORD: eventuate
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      SPRING_PROFILES_ACTIVE: EventuatePolling
       SPRING_ELASTICSEARCH_REST_URIS: "elasticsearch:9200"
       ELASTICSEARCH_HOST: elasticsearch
       ELASTICSEARCH_PORT: 9300
@@ -92,7 +85,7 @@ services:
       ports:
           - 9080:8080
 
-  cdcservice:
+  cdc-service:
     image: eventuateio/eventuate-cdc-service:$EVENTUATE_CDC_VERSION
     ports:
       - "8099:8080"

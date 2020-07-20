@@ -47,7 +47,7 @@ public class TodoView {
     this.title = title;
   }
 
-  public String isCompleted() {
+  public String getCompleted() {
     return completed;
   }
 

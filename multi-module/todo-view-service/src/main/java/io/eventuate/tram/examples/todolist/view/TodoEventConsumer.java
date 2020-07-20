@@ -2,9 +2,9 @@ package io.eventuate.tram.examples.todolist.view;
 
 import io.eventuate.tram.events.subscriber.DomainEventHandlers;
 import io.eventuate.tram.events.subscriber.DomainEventHandlersBuilder;
-import io.eventuate.tram.examples.todolist.common.TodoCreated;
-import io.eventuate.tram.examples.todolist.common.TodoDeleted;
-import io.eventuate.tram.examples.todolist.common.TodoUpdated;
+import io.eventuate.tram.examples.todolist.command.events.TodoCreated;
+import io.eventuate.tram.examples.todolist.command.events.TodoDeleted;
+import io.eventuate.tram.examples.todolist.command.events.TodoUpdated;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
