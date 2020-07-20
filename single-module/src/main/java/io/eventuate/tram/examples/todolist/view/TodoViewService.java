@@ -31,7 +31,7 @@ public class TodoViewService {
 
     SearchResponse response = transportClient.prepareSearch(TodoView.INDEX)
             .setTypes(TodoView.TYPE)
-            .setQuery(QueryBuilders.termQuery("_all", value))
+            .setQuery(QueryBuilders.multiMatchQuery(value, "*"))
             .get();
 
     List<TodoView> result = new ArrayList<>();

@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.xcontent.XContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,7 @@ public class TodoViewService {
 
     SearchResponse response = transportClient.prepareSearch(TodoView.INDEX)
             .setTypes(TodoView.TYPE)
-            .setQuery(QueryBuilders.termQuery("_all", value))
+            .setQuery(QueryBuilders.multiMatchQuery(value, "*"))
             .get();
 
     List<TodoView> result = new ArrayList<>();

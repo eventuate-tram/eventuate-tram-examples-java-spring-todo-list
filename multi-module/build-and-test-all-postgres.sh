@@ -1,6 +1,6 @@
 #! /bin/bash -e
 
-export database=mysql
+export database=postgres
 export SPRING_PROFILES_ACTIVE=postgres
 
 ./_build-and-test-all.sh

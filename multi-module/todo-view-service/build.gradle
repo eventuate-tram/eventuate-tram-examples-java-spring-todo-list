@@ -2,7 +2,7 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     compile project (":common")
-    compile "org.elasticsearch.client:transport:5.6.3"
+    compile "org.elasticsearch.client:transport:6.4.3"
 
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
