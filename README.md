@@ -169,7 +169,6 @@ First, build the application
 Next, launch the services using [Docker Compose](https://docs.docker.com/compose/):
 
 ```
-export DOCKER_HOST_IP=...
 ./gradlew mysqlComposeBuild
 ./gradlew mysqlComposeUp
 ```
@@ -177,10 +176,6 @@ export DOCKER_HOST_IP=...
 Note:
 
 1. You can also run the Postgres version using `./gradlew postgresComposeBuild`
-2. You need to set `DOCKER_HOST_IP` before running Docker Compose.
-This must be an IP address or resolvable hostname.
-It cannot be `localhost`.
-See this [guide to setting `DOCKER_HOST_IP`](http://eventuate.io/docs/usingdocker.html) for more information.
 
 # Using the application
 
@@ -188,12 +183,12 @@ Once the application has started, you can use the application via the Swagger UI
 
 If you are running the `multi-module` version:
 
-* `http://${DOCKER_HOST_IP}:8081/swagger-ui.html` - the command-side service
-* `http://${DOCKER_HOST_IP}:8082/swagger-ui.html` - the query-side service
+* `http://localhost:8081/swagger-ui.html` - the command-side service
+* `http://localhost:8082/swagger-ui.html` - the query-side service
 
 If you are running the `single-module` version:
 
-* `http://${DOCKER_HOST_IP}:8080/swagger-ui.html` - the monolithic application
+* `http://localhost:8080/swagger-ui.html` - the monolithic application
 
 # Got questions?
 

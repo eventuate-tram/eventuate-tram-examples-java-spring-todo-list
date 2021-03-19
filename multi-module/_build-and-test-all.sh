@@ -1,8 +1,6 @@
 #! /bin/bash -e
 
 
-. ./set-env-${database}.sh
-
 dockerinfrastructure="./gradlew ${database}infrastructureCompose"
 dockerall="./gradlew ${database}Compose"
 
@@ -10,14 +8,20 @@ ${dockerall}Down
 ${dockerinfrastructure}Build
 ${dockerinfrastructure}Up
 
-./wait-for-infrastructure.sh
+#Testing db cli
+if [ "${database}" == "mysql" ]; then
+  echo 'show databases;' | ./mysql-cli.sh -i
+elif [ "${database}" == "postgres" ]; then
+  echo '\l' | ./postgres-cli.sh -i
+else
+  echo "Unknown Database"
+  exit 99
+fi
 
 ./gradlew -x :end-to-end-tests:test build
 
 ${dockerall}Build
 ${dockerall}Up
-
-./wait-for-todo-list-services.sh
 
 ./gradlew :end-to-end-tests:cleanTest :end-to-end-tests:test
 

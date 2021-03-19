@@ -6,7 +6,11 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: eventuate-tram-examples-java-spring-todo-list-{{ checksum "multi-module/build.gradle" }}
+          keys:
+            - eventuate-tram-examples-java-spring-todo-list-{{ checksum "multi-module/build.gradle" }}
+            - eventuate-tram-examples-java-spring-todo-list-
+      - run:
+          command: ./.circleci/upgrade-docker-compose.sh
       - run:
           command: |
             export TERM=dumb
@@ -21,6 +25,10 @@ jobs:
       - run:
           command: |
             export TERM=dumb
+            ./.circleci/stop-and-remove-all-docker-containers.sh
+      - run:
+          command: |
+            export TERM=dumb
             cd single-module
             ./build-and-test-all-mysql.sh
       - run:
@@ -38,6 +46,18 @@ jobs:
             export TERM=dumb
             cd multi-module
             ./build-and-test-all-postgres.sh
+      - run:
+          name: Print container logs
+          command: |
+            export TERM=dumb
+            ./.circleci/print-container-logs.sh
+          when: always
+      - run:
+          name: Save container logs
+          command: |
+            export TERM=dumb
+            ./.circleci/save-containers-and-tests.sh
+          when: always
       - run:
           name: Save test results
           command: |
