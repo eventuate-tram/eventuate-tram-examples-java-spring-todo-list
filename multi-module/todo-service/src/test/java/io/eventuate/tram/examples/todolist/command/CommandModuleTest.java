@@ -2,6 +2,8 @@ package io.eventuate.tram.examples.todolist.command;
 
 
 import io.eventuate.tram.examples.todolist.common.Utils;
+import io.eventuate.tram.examples.todolist.command.webapi.CreateTodoRequest;
+import io.eventuate.tram.examples.todolist.command.webapi.UpdateTodoRequest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

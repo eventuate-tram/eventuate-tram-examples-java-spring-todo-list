@@ -1,15 +1,15 @@
-package io.eventuate.tram.examples.todolist.command;
+package io.eventuate.tram.examples.todolist.command.webapi;
 
 
-public class UpdateTodoRequest {
+public class CreateTodoRequest {
   private String title;
   private boolean completed;
   private int order;
 
-  public UpdateTodoRequest() {
+  public CreateTodoRequest() {
   }
 
-  public UpdateTodoRequest(String title, boolean completed, int order) {
+  public CreateTodoRequest(String title, boolean completed, int order) {
     this.title = title;
     this.completed = completed;
     this.order = order;

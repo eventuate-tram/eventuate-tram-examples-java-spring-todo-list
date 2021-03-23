@@ -2,7 +2,22 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     compile project (":common")
+    compile project (":common-swagger")
+    compile project (":todo-service-api-web")
+    compile project (":todo-service-api-events")
+
+    compile "io.eventuate.tram.core:eventuate-tram-spring-jdbc-kafka:$eventuateTramVersion"
+
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    compile 'javax.el:javax.el-api:2.2.5'
+    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    compile "org.springframework.hateoas:spring-hateoas:$springHateoasVersion"
+
+    compile 'mysql:mysql-connector-java:5.1.36'
+    compile ('org.postgresql:postgresql:9.4-1200-jdbc41') {
+        exclude group: "org.slf4j", module: "slf4j-simple"
+    }
 
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"

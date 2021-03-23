@@ -10,18 +10,25 @@ public class TodoView {
 
   private String title;
 
-  private boolean completed;
+  private String completed;
 
-  private int executionOrder;
+  private String executionOrder;
 
   public TodoView() {
+  }
+
+  public TodoView(String id, String title, String completed, String executionOrder) {
+    this.id = id;
+    this.title = title;
+    this.completed = completed;
+    this.executionOrder = executionOrder;
   }
 
   public TodoView(String id, String title, boolean completed, int executionOrder) {
     this.id = id;
     this.title = title;
-    this.completed = completed;
-    this.executionOrder = executionOrder;
+    this.completed = String.valueOf(completed);
+    this.executionOrder = String.valueOf(executionOrder);
   }
 
   public String getId() {
@@ -40,19 +47,19 @@ public class TodoView {
     this.title = title;
   }
 
-  public boolean isCompleted() {
+  public String getCompleted() {
     return completed;
   }
 
-  public void setCompleted(boolean completed) {
+  public void setCompleted(String completed) {
     this.completed = completed;
   }
 
-  public int getExecutionOrder() {
+  public String getExecutionOrder() {
     return executionOrder;
   }
 
-  public void setExecutionOrder(int executionOrder) {
+  public void setExecutionOrder(String executionOrder) {
     this.executionOrder = executionOrder;
   }
 }

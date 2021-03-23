@@ -1,9 +1,8 @@
-package io.eventuate.tram.examples.todolist.endtoend;
+package io.eventuate.tram.examples.todolist.command.events;
 
+import io.eventuate.tram.events.common.DomainEvent;
 
-public class TodoView {
-
-  private String id;
+public class TodoCreated implements DomainEvent {
 
   private String title;
 
@@ -11,22 +10,13 @@ public class TodoView {
 
   private int executionOrder;
 
-  public TodoView() {
+  public TodoCreated() {
   }
 
-  public TodoView(String id, String title, boolean completed, int executionOrder) {
-    this.id = id;
+  public TodoCreated(String title, boolean completed, int executionOrder) {
     this.title = title;
     this.completed = completed;
     this.executionOrder = executionOrder;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getTitle() {

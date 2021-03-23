@@ -1,4 +1,4 @@
-package io.eventuate.tram.examples.todolist.command;
+package io.eventuate.tram.examples.todolist.command.webapi;
 
 
 public class CreateTodoResponse {

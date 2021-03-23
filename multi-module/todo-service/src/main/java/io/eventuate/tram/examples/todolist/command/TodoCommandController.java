@@ -1,5 +1,8 @@
 package io.eventuate.tram.examples.todolist.command;
 
+import io.eventuate.tram.examples.todolist.command.webapi.CreateTodoRequest;
+import io.eventuate.tram.examples.todolist.command.webapi.CreateTodoResponse;
+import io.eventuate.tram.examples.todolist.command.webapi.UpdateTodoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

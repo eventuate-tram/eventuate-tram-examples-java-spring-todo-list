@@ -1,9 +1,11 @@
 package io.eventuate.tram.examples.todolist.command;
 
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
-import io.eventuate.tram.examples.todolist.common.TodoCreated;
-import io.eventuate.tram.examples.todolist.common.TodoDeleted;
-import io.eventuate.tram.examples.todolist.common.TodoUpdated;
+import io.eventuate.tram.examples.todolist.command.events.TodoCreated;
+import io.eventuate.tram.examples.todolist.command.events.TodoDeleted;
+import io.eventuate.tram.examples.todolist.command.events.TodoUpdated;
+import io.eventuate.tram.examples.todolist.command.webapi.CreateTodoRequest;
+import io.eventuate.tram.examples.todolist.command.webapi.UpdateTodoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

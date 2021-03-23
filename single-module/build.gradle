@@ -31,7 +31,7 @@ dependencies {
     compile "io.eventuate.tram.core:eventuate-tram-spring-jdbc-kafka:$eventuateTramVersion"
     compile "io.eventuate.tram.core:eventuate-tram-spring-events:$eventuateTramVersion"
 
-    compile "org.elasticsearch.client:transport:5.6.3"
+    compile "org.elasticsearch.client:transport:6.4.3"
 
     compile "org.apache.logging.log4j:log4j-api:2.6.2"
     compile "org.apache.logging.log4j:log4j-to-slf4j:2.6.2"
@@ -64,8 +64,8 @@ dependencies {
 
 dockerCompose {
     environment.put "EVENTUATE_COMMON_VERSION", eventuateCommonImageVersion
-    environment.put "EVENTUATE_KAFKA_VERSION", eventuateMessagingKafkaImageVersion
     environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
+    environment.put "EVENTUATE_JAVA_BASE_IMAGE_VERSION", eventuateExamplesBaseImageVersion
 
     mysql {
         projectName = null
@@ -75,7 +75,7 @@ dockerCompose {
     mysqlinfrastructure {
         projectName = null
         useComposeFiles = ["docker-compose-mysql.yml"]
-        startedServices = ["cdcservice", "elasticsearch"]
+        startedServices = ["cdc-service", "elasticsearch"]
     }
 
     postgres {
@@ -86,6 +86,6 @@ dockerCompose {
     postgresinfrastructure {
         projectName = null
         useComposeFiles = ["docker-compose-postgres.yml"]
-        startedServices = ["cdcservice", "elasticsearch"]
+        startedServices = ["cdc-service", "elasticsearch"]
     }
 }

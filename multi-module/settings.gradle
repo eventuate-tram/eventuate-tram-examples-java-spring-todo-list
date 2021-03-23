@@ -1,6 +1,10 @@
 include "common"
+include "common-swagger"
 include "todo-service"
+include "todo-service-api-web"
+include "todo-service-api-events"
 include "todo-view-service"
+include "todo-view-service-api-web"
 include "end-to-end-tests"
 
 rootProject.name = 'eventuate-tram-examples-java-spring-todo-list-multi-module'

@@ -1,6 +1,6 @@
 package io.eventuate.tram.examples.todolist.view;
 
-import io.eventuate.tram.examples.todolist.common.SwaggerConfiguration;
+import io.eventuate.tram.examples.todolist.common.swagger.SwaggerConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
