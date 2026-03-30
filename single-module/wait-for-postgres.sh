@@ -1,6 +1,6 @@
 #! /bin/sh
 
-until (echo select 1 | ./postgres-cli.sh -i > /dev/null)
+until docker exec single-module-postgres-1 sh -c 'PGPASSWORD=eventuate psql -h localhost -U eventuate -c "select 1"' > /dev/null 2>&1
 do
  echo sleeping for postgres
  sleep 5

@@ -1,9 +1,11 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
-    compile project (":common")
-    compile "org.elasticsearch.client:transport:5.6.3"
+    implementation project(":common")
 
-    testCompile "junit:junit:4.12"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-data-elasticsearch"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-consumer-kafka"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-events-subscriber-starter"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }

@@ -8,23 +8,20 @@ import io.eventuate.tram.examples.todolist.command.UpdateTodoRequest;
 import io.eventuate.tram.examples.todolist.view.TodoView;
 import io.eventuate.tram.examples.todolist.view.TodoViewConfiguration;
 import io.eventuate.util.test.async.Eventually;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {TodoViewConfiguration.class,
         TodoCommandConfiguration.class},
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -54,7 +51,7 @@ public class EndToEndTest {
             .toString();
 
     Eventually.eventually(300, 100, TimeUnit.MILLISECONDS, () -> {
-        Assert.assertTrue(search("testcreate").stream().anyMatch(view -> id.equals(view.getId())));
+      assertTrue(search("testcreate").stream().anyMatch(view -> id.equals(view.getId())));
     });
 
 
@@ -67,7 +64,7 @@ public class EndToEndTest {
             .statusCode(200);
 
     Eventually.eventually(300, 100, TimeUnit.MILLISECONDS, () -> {
-        Assert.assertTrue(search("testupdate").stream().anyMatch(view -> id.equals(view.getId())));
+      assertTrue(search("testupdate").stream().anyMatch(view -> id.equals(view.getId())));
     });
 
     given()
@@ -77,7 +74,7 @@ public class EndToEndTest {
             .statusCode(200);
 
     Eventually.eventually(300, 100, TimeUnit.MILLISECONDS, () -> {
-        Assert.assertFalse(search("testupdate").stream().anyMatch(view -> id.equals(view.getId())));
+      assertFalse(search("testupdate").stream().anyMatch(view -> id.equals(view.getId())));
     });
   }
 

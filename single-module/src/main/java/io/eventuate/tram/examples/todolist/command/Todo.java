@@ -1,6 +1,6 @@
 package io.eventuate.tram.examples.todolist.command;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "todo")

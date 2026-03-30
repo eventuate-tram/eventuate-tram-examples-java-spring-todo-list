@@ -1,6 +1,6 @@
 #! /bin/sh
 
-until (echo select 1 from dual | ./mysql-cli.sh -i > /dev/null)
+until docker exec single-module-mysql-1 sh -c 'mysql -uroot -prootpassword -e "select 1" eventuate' > /dev/null 2>&1
 do
  echo sleeping for mysql
  sleep 5

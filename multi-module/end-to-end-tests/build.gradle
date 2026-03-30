@@ -1,8 +1,9 @@
+bootJar.enabled = false
+jar.enabled = true
+
 dependencies {
-    testCompile "junit:junit:4.12"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testCompile 'com.jayway.restassured:rest-assured:2.3.0'
-    testCompile "com.jayway.jsonpath:json-path:2.3.0"
-    testCompile "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
-    testCompile "com.fasterxml.jackson.core:jackson-databind:2.9.2"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-json"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 }

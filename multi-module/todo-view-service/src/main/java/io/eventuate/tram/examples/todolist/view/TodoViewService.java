@@ -1,66 +1,63 @@
 package io.eventuate.tram.examples.todolist.view;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.indices.ExistsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TodoViewService {
   @Autowired
-  private TransportClient transportClient;
-
-  private ObjectMapper objectMapper = new ObjectMapper();
+  private ElasticsearchClient elasticsearchClient;
 
   public List<TodoView> search(String value) {
+    try {
+      boolean indexExists = elasticsearchClient.indices()
+              .exists(ExistsRequest.of(e -> e.index(TodoView.INDEX)))
+              .value();
 
-    if (!transportClient.admin().indices().prepareExists(TodoView.INDEX).execute().actionGet().isExists()) {
-      return Collections.emptyList();
-    }
-
-    SearchResponse response = transportClient.prepareSearch(TodoView.INDEX)
-            .setTypes(TodoView.TYPE)
-            .setQuery(QueryBuilders.termQuery("_all", value))
-            .get();
-
-    List<TodoView> result = new ArrayList<>();
-
-    for (SearchHit searchHit : response.getHits()) {
-      try {
-        result.add(objectMapper.readValue(searchHit.getSourceAsString(), TodoView.class));
+      if (!indexExists) {
+        return Collections.emptyList();
       }
-      catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    }
 
-    return result;
+      SearchResponse<TodoView> response = elasticsearchClient.search(s -> s
+                      .index(TodoView.INDEX)
+                      .query(q -> q.multiMatch(m -> m.query(value).fields("*"))),
+              TodoView.class);
+
+      return response.hits().hits().stream()
+              .map(Hit::source)
+              .collect(Collectors.toList());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public void index(TodoView todoView) {
     try {
-      IndexResponse ir = transportClient
-          .prepareIndex(TodoView.INDEX, TodoView.TYPE, todoView.getId())
-          .setSource(objectMapper.writeValueAsString(todoView), XContentType.JSON)
-          .get();
-    }
-    catch (JsonProcessingException e) {
-        throw new RuntimeException(e);
+      elasticsearchClient.index(i -> i
+              .index(TodoView.INDEX)
+              .id(todoView.getId())
+              .document(todoView));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public void remove(String id) {
-    transportClient.prepareDelete(TodoView.INDEX, TodoView.TYPE, id).get();
+    try {
+      elasticsearchClient.delete(d -> d
+              .index(TodoView.INDEX)
+              .id(id));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

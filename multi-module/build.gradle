@@ -1,27 +1,37 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}" apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
 subprojects {
 
     apply plugin: "java"
+    apply plugin: "org.springframework.boot"
+    apply plugin: "io.spring.dependency-management"
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
 
     repositories {
         mavenCentral()
-        jcenter()
-        maven {
-            url "https://dl.bintray.com/eventuateio-oss/eventuate-maven-release"
-        }
         eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
     }
 
+    dependencyManagement {
+        imports {
+            mavenBom "io.eventuate.platform:eventuate-platform-dependencies:$eventuatePlatformVersion"
+        }
+    }
+
+    dependencies {
+        testImplementation "org.junit.jupiter:junit-jupiter"
+        testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }

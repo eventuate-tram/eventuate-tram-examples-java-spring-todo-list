@@ -1,63 +1,46 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
-    }
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
-
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    jcenter()
-    eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
-    maven {
-        url "https://dl.bintray.com/eventuateio-oss/eventuate-maven-release"
-    }
+    maven { url "https://snapshots.repositories.eventuate.io/repository" }
 }
 
 dependencies {
 
-    compile "io.eventuate.tram.core:eventuate-tram-jdbc-kafka:$eventuateTramVersion"
-    compile "io.eventuate.tram.core:eventuate-tram-events:$eventuateTramVersion"
+    implementation platform("io.eventuate.platform:eventuate-platform-dependencies:$eventuatePlatformVersion")
 
-    compile "org.elasticsearch.client:transport:5.6.3"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-producer-jdbc"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-events-publisher-starter"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-consumer-kafka"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-events-subscriber-starter"
 
-    compile "org.apache.logging.log4j:log4j-api:2.6.2"
-    compile "org.apache.logging.log4j:log4j-to-slf4j:2.6.2"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-data-elasticsearch"
 
-    compile 'javax.el:javax.el-api:2.2.5'
-
-    compile 'mysql:mysql-connector-java:5.1.36'
-
-    compile ('org.postgresql:postgresql:9.4-1200-jdbc41') {
+    implementation ('org.postgresql:postgresql') {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
+    implementation 'com.mysql:mysql-connector-j'
 
-    compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "org.springframework.hateoas:spring-hateoas:$springHateoasVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
+}
 
-    compile "io.reactivex:rxjava:1.1.5"
-    compile "org.apache.httpcomponents:httpclient:4.5"
-
-    compile "io.springfox:springfox-swagger2:2.2.2"
-    compile 'io.springfox:springfox-swagger-ui:2.2.2'
-
-    testCompile "junit:junit:4.12"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testCompile 'com.jayway.restassured:rest-assured:2.3.0'
-    testCompile "com.jayway.jsonpath:json-path:2.3.0"
-    testCompile "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
+test {
+    useJUnitPlatform()
 }
