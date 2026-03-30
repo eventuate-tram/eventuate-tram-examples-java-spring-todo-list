@@ -9,7 +9,7 @@ workflows:
           name: single-module-mysql
           resource_class: large
           script: ./single-module/build-and-test-all-mysql.sh
-          gradle_cache_command: cd single-module && ./gradlew testClasses
+          gradle_cache_command: ./single-module/gradlew -p single-module testClasses
           machine_image: ubuntu-2204:2024.01.1
           java_version_to_install: '17'
           checksum_files: single-module/gradle.properties single-module/gradle/wrapper/gradle-wrapper.properties
@@ -17,7 +17,7 @@ workflows:
           name: single-module-postgres
           resource_class: large
           script: ./single-module/build-and-test-all-postgres.sh
-          gradle_cache_command: cd single-module && ./gradlew testClasses
+          gradle_cache_command: ./single-module/gradlew -p single-module testClasses
           machine_image: ubuntu-2204:2024.01.1
           java_version_to_install: '17'
           checksum_files: single-module/gradle.properties single-module/gradle/wrapper/gradle-wrapper.properties
@@ -25,7 +25,7 @@ workflows:
           name: multi-module-mysql
           resource_class: large
           script: ./multi-module/build-and-test-all-mysql.sh
-          gradle_cache_command: cd multi-module && ./gradlew testClasses
+          gradle_cache_command: ./multi-module/gradlew -p multi-module testClasses
           machine_image: ubuntu-2204:2024.01.1
           java_version_to_install: '17'
           checksum_files: multi-module/gradle.properties multi-module/gradle/wrapper/gradle-wrapper.properties
@@ -33,7 +33,7 @@ workflows:
           name: multi-module-postgres
           resource_class: large
           script: ./multi-module/build-and-test-all-postgres.sh
-          gradle_cache_command: cd multi-module && ./gradlew testClasses
+          gradle_cache_command: ./multi-module/gradlew -p multi-module testClasses
           machine_image: ubuntu-2204:2024.01.1
           java_version_to_install: '17'
           checksum_files: multi-module/gradle.properties multi-module/gradle/wrapper/gradle-wrapper.properties
