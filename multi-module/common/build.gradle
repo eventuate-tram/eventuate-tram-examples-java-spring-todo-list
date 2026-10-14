@@ -11,6 +11,6 @@ dependencies {
     api 'com.mysql:mysql-connector-j'
     api 'org.postgresql:postgresql'
 
-    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.springframework.boot:spring-boot-starter-webmvc"
     api "org.springframework.boot:spring-boot-starter-actuator"
 }

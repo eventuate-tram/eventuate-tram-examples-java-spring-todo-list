@@ -25,7 +25,7 @@ dependencies {
     implementation "io.eventuate.tram.core:eventuate-tram-spring-events-subscriber-starter"
 
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-webmvc"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-data-elasticsearch"
 
@@ -37,7 +37,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
     testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 }
 

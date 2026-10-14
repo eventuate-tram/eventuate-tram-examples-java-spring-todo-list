@@ -1,7 +1,7 @@
 package io.eventuate.tram.examples.todolist;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.eventuate.tram.examples.todolist.command.CreateTodoRequest;
 import io.eventuate.tram.examples.todolist.command.TodoCommandConfiguration;
 import io.eventuate.tram.examples.todolist.command.UpdateTodoRequest;
@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -79,19 +78,15 @@ public class EndToEndTest {
   }
 
   private List<TodoView> search(String value) {
-    try {
-      return Arrays.asList(objectMapper.readValue(given()
-              .queryParam("search", value)
-              .when()
-              .get(baseUrl() + "/todos")
-              .then()
-              .statusCode(200)
-              .extract()
-              .response()
-              .asString(), TodoView[].class));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    return Arrays.asList(objectMapper.readValue(given()
+            .queryParam("search", value)
+            .when()
+            .get(baseUrl() + "/todos")
+            .then()
+            .statusCode(200)
+            .extract()
+            .response()
+            .asString(), TodoView[].class));
   }
 
   private final String baseUrl() {
